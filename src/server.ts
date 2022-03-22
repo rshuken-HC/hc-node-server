@@ -15,8 +15,6 @@ import { getToken } from "./controller/authentication.express";
 import { bearerToken } from "koa-bearer-token";
 
 // create connection with database
-// note that its not active database connection
-// TypeORM creates you connection pull to uses connections from pull on your requests
 createConnection()
     .then(async () => {
         const app = new Koa();
