@@ -14,22 +14,6 @@ import { cron } from "./cron/cron";
 import { getToken } from "./controller/authentication.express";
 import { bearerToken } from "koa-bearer-token";
 
-/** the below code is used to connect to a local postgress server if needed */
-// const connectionOptions: ConnectionOptions = {
-//     type: "postgres",
-//     url: config.databaseUrl,
-//     synchronize: true,
-//     logging: false,
-//     entities: config.dbEntitiesPath,
-//     ssl: config.dbsslconn, // if not development, will use SSL
-//     extra: {},
-// };
-// if (connectionOptions.ssl) {
-//     connectionOptions.extra.ssl = {
-//         rejectUnauthorized: false, // Heroku uses self signed certificates
-//     };
-// }
-
 // create connection with database
 // note that its not active database connection
 // TypeORM creates you connection pull to uses connections from pull on your requests
