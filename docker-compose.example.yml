@@ -1,0 +1,70 @@
+version: "2"
+services:
+    app:
+        build:
+            context: ./
+            args:
+                NODE_VERSION: 14
+                WWWGROUP: "${WWWGROUP}"
+        image: galley/app:7.4
+        ports:
+            - "${APP_PORT:-80}:80"
+        environment:
+            WWWUSER: "${WWWUSER}"
+        volumes:
+            - .:/srv/http
+            - ../assets/images:/srv/http/webroot/images
+        networks:
+            - galley
+        depends_on:
+            - mysql
+            - redis
+    mysql:
+        build:
+            context: ./
+        image: galley/mysql:5.7
+        ports:
+            - "${MYSQL_PORT-3306}:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: "secret"
+            MYSQL_DATABASE: "harbor"
+            MYSQL_USER: "harbor"
+            MYSQL_PASSWORD: "secret"
+        volumes:
+            - galleymysql:/var/lib/mysql
+        networks:
+            - galley
+    redis:
+        image: redis:alpine
+        ports:
+            - "${REDIS_PORT:-6379}:6379"
+        volumes:
+            - galleyredis:/data
+        networks:
+            - galley
+networks:
+    galley:
+        driver: bridge
+volumes:
+    galleymysql:
+        driver: local
+    galleyredis:
+        driver: local
+# version: '3.1'
+# services :
+#   db:
+#     image: postgres:10-alpine
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       POSTGRES_USER: user
+#       POSTGRES_PASSWORD: pass
+#       POSTGRES_DB: apidb
+#   admin:
+#     image: adminer
+#     restart: always
+#     depends_on:
+#       - db
+#     ports:
+#       - 8080:8080
+
